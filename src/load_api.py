@@ -22,7 +22,6 @@ class HeadHunter_API:
 
         self.response = requests.get(f'{self.url}{self.endpoint}', params=self.params)
 
-
     def get_info_via_API(self):
         self.response = self.response.json()
         return self.response
@@ -88,12 +87,15 @@ for id in hh_api.all_id:
 
 merged_items = []
 for json_data in all_items:
-    items_list = json_data['items']
-    merged_items.extend(items_list)
+    merged_items.extend(json_data.get('items', []))
 
-merged_json = {
-    'items': merged_items
-}
+
+
+with open("json.json", "w", encoding='utf-8') as json_file:
+    for item in merged_items:
+        json.dump(item, json_file, ensure_ascii=False)
+        json_file.write('\n')
+
 # print(merged_json)
 
 
