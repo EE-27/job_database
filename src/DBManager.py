@@ -2,7 +2,8 @@ import psycopg2
 
 
 class DBManager:
-    def __init__(self):
+    def __init__(self, table):
+        self.table = table
         self.conn = psycopg2.connect(
             dbname="job_database",
             user="postgres",
@@ -15,7 +16,7 @@ class DBManager:
     def get_companies_and_vacancies_count(self):
         with self.conn.cursor() as cur:
             cur.execute(
-                f'''SELECT employer, COUNT(name) AS total FROM table1
+                f'''SELECT employer, COUNT(name) AS total FROM {self.table}
                         GROUP BY employer
                         ORDER BY total DESC'''
             )
@@ -28,7 +29,7 @@ class DBManager:
     def get_all_vacancies(self):
         with self.conn.cursor() as cur:
             cur.execute(
-                f'''SELECT employer, name, salary_from, currency FROM table1'''
+                f'''SELECT employer, name, salary_from, currency FROM {self.table}'''
             )
             rows = cur.fetchall()
             print(f"Company name -- vacancy name -- salary from -- currency")
@@ -40,7 +41,7 @@ class DBManager:
     def get_avg_salary(self):
         with self.conn.cursor() as cur:
             cur.execute(
-                f'''SELECT AVG(salary_from) FROM table1'''
+                f'''SELECT AVG(salary_from) FROM {self.table}'''
             )
             rows = cur.fetchone()
             for row in rows:
@@ -50,7 +51,7 @@ class DBManager:
         with self.conn.cursor() as cur:
             cur.execute(
                 f"""SELECT employer, name, salary_from, currency 
-                FROM table1 WHERE salary_from > (SELECT AVG(salary_from) FROM table1) 
+                FROM {self.table} WHERE salary_from > (SELECT AVG(salary_from) FROM {self.table}) 
                 ORDER BY salary_from DESC"""
             )
             rows = cur.fetchall()
@@ -66,7 +67,7 @@ class DBManager:
         with self.conn.cursor() as cur:
             cur.execute(
                 f"""SELECT name, salary_from, currency, employer 
-                FROM table1 WHERE name LIKE '%{keyword}%'"""
+                FROM {self.table} WHERE name LIKE '%{keyword}%'"""
             )
             rows = cur.fetchall()
             if cur.rowcount == 0:
@@ -78,6 +79,3 @@ class DBManager:
                     print(f"{name} -- {salary_from}- - {currency} -- {employer}")
 
 
-manager = DBManager()
-
-manager.get_vacancies_with_keyword("курьер")

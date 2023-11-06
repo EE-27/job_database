@@ -24,7 +24,7 @@ def create_database():
     conn.close()
 
 
-def create_table():
+def create_table(table):
     conn = psycopg2.connect(
         dbname="job_database",
         user="postgres",
@@ -34,7 +34,7 @@ def create_table():
     )
     cur = conn.cursor()
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS table1 
+    cur.execute(f"""CREATE TABLE IF NOT EXISTS {table} 
     (
         id INT PRIMARY KEY,
         name TEXT,
@@ -49,7 +49,7 @@ def create_table():
     conn.commit()
     conn.close()
 
-def insert_values():
+def insert_values(table):
     conn = psycopg2.connect(
         dbname="job_database",
         user="postgres",
@@ -78,8 +78,8 @@ def insert_values():
             requirement = item['snippet']['requirement']
             responsibility = item['snippet']['responsibility']
 
-            insert_query = """
-                INSERT INTO table1 (id, name, employer, salary_from, salary_to, currency, requirement, responsibility)
+            insert_query = f"""
+                INSERT INTO {table} (id, name, employer, salary_from, salary_to, currency, requirement, responsibility)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 """
             data = (empl_id, name, employer, salary_from, salary_to, salary_currency, requirement, responsibility)

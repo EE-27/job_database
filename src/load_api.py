@@ -68,33 +68,32 @@ def loading(api):
     Returns: dict or str: The loaded data from the API if successful, or an error message if the request fails.
     """
     api.load()
+    # hh_api.get_info_via_API()
+    # # hh_api.get_id_employer()
+    # all_items = []
+    # # print(hh_api.all_id)
+    # for id in hh_api.all_id:
+    #     hh_api.get_info_via_id(id)
+    #     data_hh = hh_api.final
+    #     all_items.append(data_hh)
+    #
+    # merged_items = []
+    # for json_data in all_items:
+    #     merged_items.extend(json_data.get('items', []))
+    #
+    # with open("json.json", "w", encoding='utf-8') as json_file:
+    #     for item in merged_items:
+    #         json.dump(item, json_file, ensure_ascii=False)
+    #         json_file.write('\n')
 
 
-# Яндекс
-keyword = "Яндекс"
+# # Яндекс
+# keyword = "Яндекс"
+#
+# hh_api = HeadHunter_API(keyword)
+#
+# loading(hh_api)
 
-hh_api = HeadHunter_API(keyword)
-
-loading(hh_api)
-hh_api.get_info_via_API()
-hh_api.get_id_employer()
-all_items = []
-print(hh_api.all_id)
-for id in hh_api.all_id:
-    hh_api.get_info_via_id(id)
-    data_hh = hh_api.final
-    all_items.append(data_hh)
-
-merged_items = []
-for json_data in all_items:
-    merged_items.extend(json_data.get('items', []))
-
-
-
-with open("json.json", "w", encoding='utf-8') as json_file:
-    for item in merged_items:
-        json.dump(item, json_file, ensure_ascii=False)
-        json_file.write('\n')
 
 # print(merged_json)
 
